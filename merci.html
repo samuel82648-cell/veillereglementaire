@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bienvenue ! — VeilleRéglementaire.fr</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue-500: #3b82f6;
+      --blue-600: #2563eb;
+      --blue-50: #eff6ff;
+      --blue-900: #1e3a5f;
+      --gray-900: #0f172a;
+      --gray-700: #334155;
+      --gray-500: #64748b;
+      --gray-100: #f1f5f9;
+      --white: #ffffff;
+      --green: #22c55e;
+      --green-50: #f0fdf4;
+      --radius: 12px;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--gray-100);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      color: var(--gray-900);
+    }
+
+    .card {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 56px 48px;
+      max-width: 560px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 8px 48px rgba(15,23,42,.10);
+    }
+
+    .icon-wrap {
+      width: 80px;
+      height: 80px;
+      background: var(--green-50);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 28px;
+      font-size: 40px;
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -.4px;
+      color: var(--gray-900);
+      margin-bottom: 12px;
+      line-height: 1.2;
+    }
+
+    .subtitle {
+      font-size: 16.5px;
+      color: var(--gray-500);
+      line-height: 1.6;
+      margin-bottom: 36px;
+    }
+
+    .steps {
+      background: var(--blue-50);
+      border-radius: var(--radius);
+      padding: 24px 28px;
+      text-align: left;
+      margin-bottom: 36px;
+    }
+
+    .steps-title {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--blue-600);
+      margin-bottom: 16px;
+    }
+
+    .step {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 8px 0;
+      font-size: 14.5px;
+      color: var(--gray-700);
+      line-height: 1.5;
+    }
+
+    .step + .step {
+      border-top: 1px solid rgba(59,130,246,.12);
+    }
+
+    .step-num {
+      width: 24px;
+      height: 24px;
+      background: var(--blue-500);
+      color: var(--white);
+      border-radius: 50%;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .email-highlight {
+      display: inline-block;
+      background: var(--blue-50);
+      border: 1px solid rgba(59,130,246,.3);
+      border-radius: 6px;
+      padding: 2px 8px;
+      font-family: monospace;
+      font-size: 13px;
+      color: var(--blue-600);
+      font-weight: 600;
+    }
+
+    .btn-home {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--blue-500);
+      color: var(--white);
+      font-size: 15px;
+      font-weight: 700;
+      padding: 14px 32px;
+      border-radius: var(--radius);
+      text-decoration: none;
+      transition: background .15s, transform .15s;
+    }
+
+    .btn-home:hover {
+      background: var(--blue-600);
+      transform: translateY(-1px);
+    }
+
+    .footer-note {
+      margin-top: 28px;
+      font-size: 13px;
+      color: var(--gray-500);
+    }
+
+    .logo {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--blue-900);
+      margin-bottom: 40px;
+      letter-spacing: -.2px;
+    }
+
+    @media (max-width: 540px) {
+      .card { padding: 40px 24px; }
+      h1 { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">VeilleRéglementaire.fr</div>
+
+    <div class="icon-wrap">✅</div>
+
+    <h1>Votre essai gratuit<br>démarre maintenant !</h1>
+    <p class="subtitle">
+      Bienvenue parmi les experts-comptables qui ne ratent plus rien.<br>
+      Votre premier récap arrive <strong>lundi matin à 9h</strong>.
+    </p>
+
+    <div class="steps">
+      <div class="steps-title">Que se passe-t-il maintenant ?</div>
+
+      <div class="step">
+        <div class="step-num">1</div>
+        <div>
+          Vérifiez votre boíte mail — vous allez recevoir un email de confirmation de
+          <span class="email-highlight">contact@veillereglementaire.fr</span>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div>
+          <strong>Lundi prochain à 9h pile</strong>, vous recevrez votre premier récap réglementaire
+          avec 3 textes clés à connaître cette semaine.
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div>
+          Pendant 14 jours, profitez du service gratuitement. Aucun débit avant la fin de l'essai.
+          Résiliation en 1 clic à tout moment.
+        </div>
+      </div>
+    </div>
+
+    <a href="https://samuel82648-cell.github.io/veillereglementaire/" class="btn-home">
+      ← Retour à l'accueil
+    </a>
+
+    <p class="footer-note">
+      Une question ? Répondez directement à l'email de confirmation,<br>
+      ou écrivez à <a href="mailto:contact@veillereglementaire.fr" style="color:var(--blue-500)">contact@veillereglementaire.fr</a>
+    </p>
+  </div>
+</body>
+</html>

@@ -3,6 +3,705 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VeilleRéglementaire.fr — La veille fiscale et juridique des experts-comptables</title>
+  <meta name="description" content="Chaque lundi matin, recevez un récap des nouveaux textes de loi, décrets et obligations fiscales. Sourcé Légifrance et JO, analysé par des experts-comptables." />
+
+  <!-- ──────────────────────────────
+       STRIPE — Remplacer par vos clés après création compte
+       1. Créer compte sur https://stripe.com
+       2. Aller dans Developers > API Keys
+       3. Copier la clé "Publishable key" (pk_live_...)
+       4. Créer un produit "VeilleRéglementaire.fr" à 39€/mois
+          ââ , 'â':  Stripe Dashboard > Products > + Add product
+       5. Copier le "Price ID" (price_...)
+       â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+  <!-- Stripe Payment Link — pas besoin de js.stripe.com/v3 -->
+
+  <style>
+    /* â"€â"€â"€ Reset & Variables â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue-900: #0f2d5c;
+      --blue-700: #1a4a8a;
+      --blue-500: #2563eb;
+      --blue-100: #dbeafe;
+      --blue-50:  #eff6ff;
+      --gray-900: #111827;
+      --gray-700: #374151;
+      --gray-500: #6b7280;
+      --gray-200: #e5e7eb;
+      --gray-100: #f3f4f6;
+      --white:    #ffffff;
+      --green:    #059669;
+      --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      --radius: 8px;
+      --shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.06);
+      --shadow-lg: 0 8px 32px rgba(0,0,0,.12);
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font);
+      color: var(--gray-900);
+      background: var(--white);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* â"€â"€â"€ Layout â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ */
+    .container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+
+    /* â"€â"€â"€ Navigation â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,255,255,.96);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--gray-200);
+      padding: 16px 0;
+    }
+    nav .container {
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo {
+      font-size: 17px; font-weight: 700;
+      color: var(--blue-900); text-decoration: none; letter-spacing: -.3px;
+    }
+    .logo span { color: var(--blue-500); }
+    .nav-cta {
+      background: var(--blue-500); color: var(--white);
+      padding: 9px 20px; border-radius: var(--radius);
+      font-size: 14px; font-weight: 600; text-decoration: none;
+      transition: background .15s;
+    }
+    .nav-cta:hover { background: var(--blue-700); }
+
+    /* â"€â"€â"€ Hero â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ */
+    .hero {
+      background: linear-gradient(160deg, var(--blue-900) 0%, var(--blue-700) 100%);
+      padding: 80px 0 72px;
+      text-align: center;
+      color: var(--white);
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2);
+      color: rgba(255,255,255,.9); font-size: 13px; font-weight: 500;
+      padding: 5px 14px; border-radius: 20px; margin-bottom: 28px;
+    }
+    .hero-badge::before {
+      content: ''; width: 7px; height: 7px; border-radius: 50%;
+      background: #34d399; flex-shrink: 0;
+      box-shadow: 0 0 0 3px rgba(52,211,153,.3);
+    }
+    h1 {
+      font-size: clamp(28px, 5vw, 48px);
+      font-weight: 800; line-height: 1.15;
+      letter-spacing: -.5px; margin-bottom: 20px;
+    }
+    h1 em { font-style: normal; color: #93c5fd; }
+    .hero-sub {
+      font-size: clamp(16px, 2.5vw, 19px);
+      color: rgba(255,255,255,.8);
+      max-width: 560px; margin: 0 auto 36px;
+    }
+    .hero-actions { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--white); color: var(--blue-700);
+      font-size: 16px; font-weight: 700;
+      padding: 14px 28px; border-radius: var(--radius);
+      border: none; cursor: pointer;
+      box-shadow: 0 4px 16px rgba(0,0,0,.2);
+      transition: transform .15s, box-shadow .15s;
+      text-decoration: none;
+    }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(0,0,0,.25); }
+    .btn-primary:active { transform: translateY(0); }
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: transparent; color: rgba(255,255,255,.85);
+      font-size: 15px; font-weight: 500;
+      padding: 14px 20px; border-radius: var(--radius);
+      border: 1px solid rgba(255,255,255,.3);
+      cursor: pointer; text-decoration: none;
+      transition: background .15s, border-color .15s;
+    }
+    .btn-secondary:hover {
+      background: rgba(255,255,255,.1);
+      border-color: rgba(255,255,255,.5);
+    }
+    .hero-trust {
+      margin-top: 32px; font-size: 13px; color: rgba(255,255,255,.55);
+    }
+
+    /* â"€â"€â"€ Social proof strip â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ */
+    .strip {
+      background: var(--gray-100);
+      border-bottom: 1px solid var(--gray-200);
+      padding: 14px 0;
+      text-align: center;
+    }
+    .strip p { font-size: 13.5px; color: var(--gray-500); }
+    .strip strong { color: var(--gray-700); }
+
+    /* â"€â"€â"€ How it works â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ */
+    .section { padding: 72px 0; }
+    .section-label {
+      font-size: 12px; font-weight: 700; letter-spacing: 1.2px;
+      text-transform: uppercase; color: var(--blue-500);
+      margin-bottom: 10px; text-align: center;
+    }
+    h2 {
+      font-size: clamp(22px, 4vw, 34px);
+      font-weight: 800; letter-spacing: -.3px;
+      color: var(--gray-900); text-align: center;
+      margin-bottom: 12px; line-height: 1.2;
+    }
+    .section-sub {
+      text-align: center; font-size: 17px;
+      color: var(--gray-500); max-width: 500px;
+      margin: 0 auto 52px;
+    }
+
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+    .step { text-align: center; }
+    .step-num {
+      width: 48px; height: 48px;
+      background: var(--blue-50); border: 2px solid var(--blue-100);
+      color: var(--blue-700); font-size: 18px; font-weight: 800;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 16px;
+    }
+    .step h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; color: var(--gray-900); }
+    .step p { font-size: 14.5px; color: var(--gray-500); line-height: 1.5; }
+
+    /* â"€â"€â"€ Features â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ */
+    .features-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .feature-card {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: 12px; padding: 24px;
+      box-shadow: var(--shadow);
+      transition: border-color .15s, box-shadow .15s;
+    }
+    .feature-card:hover {
+      border-color: var(--blue-100);
+      box-shadow: var(--shadow-lg);
+    }
+    .feature-icon {
+      width: 44px; height: 44px; border-radius: 10px;
+      background: var(--blue-50); display: flex;
+      align-items: center; justify-content: center;
+      font-size: 22px; margin-bottom: 14px;
+    }
+    .feature-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 6px; color: var(--gray-900); }
+    .feature-card p { font-size: 14px; color: var(--gray-500); line-height: 1.5; }
+
+    /* â"€â"€â"€ Sample newsletter â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ */
+    .sample-section { background: var(--gray-100); padding: 72px 0; }
+    .email-preview {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: 12px;
+      max-width: 600px; margin: 0 auto;
+      overflow: hidden; box-shadow: var(--shadow-lg);
+    }
+    .email-header {
+      background: var(--blue-900);
+      padding: 20px 28px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .email-header-logo {
+      font-size: 14px; font-weight: 700; color: var(--white);
+    }
+    .email-header-tag {
+      font-size: 11px; background: rgba(255,255,255,.15);
+      color: rgba(255,255,255,.8); padding: 3px 10px;
+      border-radius: 20px; margin-left: auto;
+    }
+    .email-body { padding: 28px; }
+    .email-date { font-size: 12px; color: var(--gray-500); margin-bottom: 4px; }
+    .email-title { font-size: 18px; font-weight: 800; color: var(--gray-900); margin-bottom: 20px; }
+    .email-item {
+      display: flex; gap: 12px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--gray-100);
+    }
+    .email-item:last-of-type { border-bottom: none; }
+    .email-bullet {
+      width: 28px; height: 28px; border-radius: 6px;
+      background: var(--blue-50); color: var(--blue-600);
+      font-size: 13px; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 2px;
+    }
+    .email-item-content h4 { font-size: 14px; font-weight: 700; color: var(--gray-900); margin-bottom: 3px; }
+    .email-item-content p { font-size: 13px; color: var(--gray-500); line-height: 1.45; }
+    .email-action {
+      background: var(--blue-50);
+      border-left: 3px solid var(--blue-500);
+      padding: 10px 14px; border-radius: 0 6px 6px 0;
+      font-size: 12.5px; color: var(--blue-700); font-weight: 600;
+      margin-top: 4px;
+    }
+
+    /* â"€â"€â"€ Pricing â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ */
+    .pricing-card {
+      background: var(--white);
+      border: 2px solid var(--blue-500);
+      border-radius: 16px; padding: 40px;
+      max-width: 440px; margin: 0 auto;
+      box-shadow: 0 8px 48px rgba(37,99,235,.15);
+      text-align: center;
+    }
+    .pricing-badge {
+      display: inline-block;
+      background: var(--blue-500); color: var(--white);
+      font-size: 12px; font-weight: 700;
+      padding: 4px 14px; border-radius: 20px;
+      margin-bottom: 20px; letter-spacing: .5px;
+      text-transform: uppercase;
+    }
+    .price {
+      font-size: 56px; font-weight: 900;
+      color: var(--gray-900); letter-spacing: -2px;
+      line-height: 1;
+    }
+    .price sup { font-size: 24px; font-weight: 700; vertical-align: super; }
+    .price-period { font-size: 16px; color: var(--gray-500); margin-bottom: 28px; }
+    .pricing-features { text-align: left; margin-bottom: 32px; }
+    .pricing-features li {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 14.5px; color: var(--gray-700);
+      padding: 7px 0;
+      border-bottom: 1px solid var(--gray-100);
+    }
+    .pricing-features li:last-child { border-bottom: none; }
+    .check { color: var(--green); font-size: 16px; font-weight: 800; flex-shrink: 0; }
+
+    .btn-subscribe {
+      width: 100%; padding: 16px 24px;
+      background: var(--blue-500); color: var(--white);
+      font-size: 17px; font-weight: 700;
+      border: none; border-radius: var(--radius);
+      cursor: pointer;
+      transition: background .15s, transform .15s;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-subscribe:hover { background: var(--blue-700); transform: translateY(-1px); }
+    .btn-subscribe:active { transform: translateY(0); }
+    .btn-subscribe:disabled {
+      opacity: .6; cursor: not-allowed; transform: none;
+    }
+    .pricing-note { font-size: 12.5px; color: var(--gray-500); margin-top: 14px; }
+
+    /* â"€â"€â"€ Testimonials â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ */
+    .testimonials { background: var(--blue-900); padding: 72px 0; }
+    .testimonials h2 { color: var(--white); }
+    .testimonials .section-sub { color: rgba(255,255,255,.6); }
+    .testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .testi-card {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 12px; padding: 24px;
+    }
+    .testi-stars { color: #fbbf24; font-size: 14px; margin-bottom: 12px; }
+    .testi-text { font-size: 14px; color: rgba(255,255,255,.8); line-height: 1.6; margin-bottom: 16px; }
+    .testi-author { font-size: 13px; color: rgba(255,255,255,.5); }
+    .testi-author strong { color: rgba(255,255,255,.8); display: block; margin-bottom: 2px; }
+
+    /* â"€â"€â"€ FAQ â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ */
+    .faq-list { max-width: 680px; margin: 0 auto; }
+    .faq-item {
+      border-bottom: 1px solid var(--gray-200);
+      padding: 20px 0;
+    }
+    .faq-q {
+      font-size: 15px; font-weight: 600; color: var(--gray-900);
+      cursor: pointer; display: flex; justify-content: space-between;
+      align-items: flex-start; gap: 12px;
+      background: none; border: none; width: 100%; text-align: left;
+    }
+    .faq-q .arrow { font-size: 18px; color: var(--blue-500); flex-shrink: 0; transition: transform .2s; }
+    .faq-item.open .arrow { transform: rotate(180deg); }
+    .faq-a {
+      font-size: 14.5px; color: var(--gray-500);
+      line-height: 1.6; margin-top: 10px;
+      display: none;
+    }
+    .faq-item.open .faq-a { display: block; }
+
+    /* â"€â"€â"€ CTA Banner â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ */
+    .cta-banner {
+      background: linear-gradient(135deg, var(--blue-700), var(--blue-900));
+      padding: 64px 0; text-align: center;
+    }
+    .cta-banner h2 { color: var(--white); margin-bottom: 12px; }
+    .cta-banner p { color: rgba(255,255,255,.7); font-size: 16px; margin-bottom: 32px; }
+    .cta-banner .btn-primary { font-size: 17px; padding: 16px 36px; }
+
+    /* â"€â"€â"€ Footer â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ */
+    footer {
+      background: var(--gray-900);
+      padding: 32px 0;
+      text-align: center;
+    }
+    footer p { font-size: 13px; color: var(--gray-500); }
+    footer a { color: var(--gray-500); text-decoration: none; }
+    footer a:hover { color: var(--gray-200); }
+
+    /* â"€â"€â"€ Modal loading â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ */
+    .loading-overlay {
+      display: none; position: fixed; inset: 0; z-index: 999;
+      background: rgba(0,0,0,.5);
+      align-items: center; justify-content: center;
+    }
+    .loading-overlay.show { display: flex; }
+    .loading-box {
+      background: var(--white); border-radius: 12px; padding: 32px 40px;
+      text-align: center; max-width: 320px;
+    }
+    .spinner {
+      width: 40px; height: 40px; border: 3px solid var(--gray-200);
+      border-top-color: var(--blue-500);
+      border-radius: 50%; animation: spin .7s linear infinite;
+      margin: 0 auto 16px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* â"€â"€â"€ Responsive â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ */
+    @media (max-width: 680px) {
+      .steps { grid-template-columns: 1fr; gap: 24px; }
+      .features-grid { grid-template-columns: 1fr; }
+      .testi-grid { grid-template-columns: 1fr; }
+      .pricing-card { padding: 28px 20px; }
+      .hero-actions { flex-direction: column; align-items: center; }
+    }
+  </style>
+  <!-- Google Analytics 4 — remplacer G-13275JDX40 par votre Measurement ID -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-13275JDX40"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-13275JDX40', { anonymize_ip: true });
+  </script>
+</head>
+<body>
+
+<!-- â"€â"€â"€ Nav â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ -->
+<nav>
+  <div class="container">
+    <a href="#" class="logo">Veille<span>Réglementaire</span>.fr</a>
+    <a href="#tarif" class="nav-cta">Essai gratuit 14 jours</a>
+  </div>
+</nav>
+
+<!-- â"€â"€â"€ Hero â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-badge">Actif chaque lundi matin</div>
+    <h1>
+      Ne manquez plus<br>
+      <em>aucune obligation fiscale</em>
+    </h1>
+    <p class="hero-sub">
+      Chaque lundi, recevez un récap clair des nouveaux textes de loi,
+      décrets et obligations comptables — sourcé JO & Légifrance,
+      résumé en <strong style="color:#fff">3 actions concrètes</strong> par nos experts.
+    </p>
+    <div class="hero-actions">
+      <a href="https://buy.stripe.com/6oU5kC22naLR2Jn6vS2sM00" class="btn-primary">
+        🚀 Essai gratuit 14 jours
+      </a>
+      <a href="#exemple" class="btn-secondary">
+        Voir un exemple ââ , 'â': 
+      </a>
+    </div>
+    <p class="hero-trust">✓ 14 jours gratuits &nbsp;·&nbsp; ✓ Sans engagement &nbsp;·&nbsp; ✓ Résiliable à tout moment</p>
+  </div>
+</section>
+
+<!-- â"€â"€â"€ Strip â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ -->
+<div class="strip">
+  <div class="container">
+    <p>📌 Sources officielles : <strong>Journal Officiel</strong> &nbsp;·&nbsp; <strong>Légifrance</strong> &nbsp;·&nbsp; <strong>BOFIP</strong> &nbsp;·&nbsp; analysé par <strong>des experts-comptables</strong></p>
+  </div>
+</div>
+
+<!-- â"€â"€â"€ How it works â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ -->
+<section class="section">
+  <div class="container">
+    <p class="section-label">Comment ça marche</p>
+    <h2>De la loi à votre boîte mail,<br>en 3 étapes</h2>
+    <p class="section-sub">Chaque semaine, nos experts font le travail de veille à votre place.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Collecte automatique</h3>
+        <p>Chaque lundi, notre système parcourt le Journal Officiel et Légifrance à la recherche des nouveaux textes comptables et fiscaux.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>Analyse par nos experts</h3>
+        <p>Notre équipe analyse et sélectionne les textes pertinents pour les experts-comptables, et rédige 3 points actionnables.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Dans votre boîte mail</h3>
+        <p>Chaque lundi à 9h, vous recevez un email clair et lisible. 5 minutes de lecture, 0 veille manuelle.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- â"€â"€â"€ Features â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ -->
+<section class="section" style="background: var(--gray-50); padding-top: 0;">
+  <div class="container">
+    <p class="section-label">Pourquoi choisir VeilleRéglementaire.fr</p>
+    <h2>Conçu pour les<br>experts-comptables</h2>
+    <p class="section-sub">Pas de bruit, pas de généralités. Uniquement ce qui vous concerne.</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">⚖️</div>
+        <h3>Sources officielles uniquement</h3>
+        <p>Chaque information est sourcée directement depuis le Journal Officiel, Légifrance et le BOFIP. Zéro information non vérifiée.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔍</div>
+        <h3>3 actions concrètes chaque semaine</h3>
+        <p>Nous ne listons pas les textes : nous identifions ce que vous devez faire concrètement pour vos clients.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⏱️</div>
+        <h3>Moins de 5 minutes par semaine</h3>
+        <p>Format digest ultra-lisible. Pas d'articles à lire, pas de PDF à parcourir. Juste ce qui compte, là où il le faut.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📔</div>
+        <h3>Livré le lundi à 9h pile</h3>
+        <p>Démarrez votre semaine avec une vue complète de l'actualité réglementaire. Anticipez avant vos clients.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- â"€â"€â"€ Sample Email â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ -->
+<section class="sample-section" id="exemple">
+  <div class="container">
+    <p class="section-label">Aperçu</p>
+    <h2>À quoi ressemble<br>votre récap du lundi ?</h2>
+    <p class="section-sub">Un exemple d'email que vous recevriez ce lundi matin.</p>
+    <div class="email-preview">
+      <div class="email-header">
+        <div class="email-header-logo">VeilleRéglementaire.fr</div>
+        <div class="email-header-tag">Lundi 9h — Édition semaine</div>
+      </div>
+      <div class="email-body">
+        <div class="email-date">Lundi 17 mars 2025</div>
+        <div class="email-title">📋 Récap réglementaire — 3 textes à connaître cette semaine</div>
+        <div class="email-item">
+          <div class="email-bullet">1</div>
+          <div class="email-item-content">
+            <h4>Décret n°2025-XXX — Nouvelles obligations déclaratives TVA</h4>
+            <p>Publication d'un décret modifiant les modalités de déclaration de TVA pour les assujettis au régime réel normal. Entrée en vigueur au 1er avril 2025.</p>
+            <div class="email-action">â¾¤ Action : Vérifier les paramétrage de vos logiciels comptables clients avant le 31 mars</div>
+          </div>
+        </div>
+        <div class="email-item">
+          <div class="email-bullet">2</div>
+          <div class="email-item-content">
+            <h4>Arrêté — Mise à jour du barème kilométrique 2025</h4>
+            <p>Publication du nouveau barème kilométrique pour les indemnités de déplacement. Revalorisation de 1,2% par rapport à 2024.</p>
+            <div class="email-action">â¾¤ Action : Mettre à jour vos modèles de notes de frais clients dés cette semaine</div>
+          </div>
+        </div>
+        <div class="email-item">
+          <div class="email-bullet">3</div>
+          <div class="email-item-content">
+            <h4>Circulaire DGFiP — Précisions sur le dispositif MaPrimeRénov'</h4>
+            <p>La DGFiP précise les modalités de traitement fiscal des aides MaPrimeRénov' pour les bailleurs. Nouvelles instructions applicables immédiatement.</p>
+            <div class="email-action">â¾¤ Action : Informer vos clients bailleurs lors des prochaines liasses fiscales</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- â"€â"€â"€ Pricing â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ -->
+<section class="section" id="tarif">
+  <div class="container">
+    <p class="section-label">Tarif</p>
+    <h2>Simple, transparent,<br>sans engagement</h2>
+    <p class="section-sub">Un seul abonnement. Tout inclus.</p>
+    <div class="pricing-card">
+      <div class="pricing-badge">14 jours d'essai gratuit</div>
+      <div class="price"><sup>€</sup>39<span style="font-size:24px;font-weight:400;color:var(--gray-500)">/mois</span></div>
+      <p class="price-period">soit moins de 10€/semaine · débité après l'essai gratuit</p>
+      <ul class="pricing-features">
+        <li><span class="check">✓</span> <strong>14 jours d'essai gratuit</strong></li>
+        <li><span class="check">✓</span> Récap réglementaire chaque lundi à 9h</li>
+        <li><span class="check">✓</span> 3 actions concrètes par édition</li>
+        <li><span class="check">✓</span> Sources JO & Légifrance vérifiées</li>
+        <li><span class="check">✓</span> Analysé par des experts-comptables</li>
+        <li><span class="check">✓</span> Format email ultra-lisible</li>
+        <li><span class="check">✓</span> Résiliable à tout moment, même pendant l'essai</li>
+      </ul>
+      <a href="https://buy.stripe.com/6oU5kC22naLR2Jn6vS2sM00" class="btn-subscribe" id="subscribeBtn">
+        🚀 Démarrer mon essai gratuit
+      </a>
+      <p class="pricing-note">CB requise · Aucun débit pendant 14 jours · Résiliation en 1 clic · Paiement sécurisé Stripe</p>
+    </div>
+  </div>
+</section>
+
+<!-- â"€â"€â"€ Testimonials â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ -->
+<section class="testimonials">
+  <div class="container">
+    <p class="section-label" style="color:rgba(255,255,255,.5)">Témoignages</p>
+    <h2>Ce que disent<br>nos abonnés</h2>
+    <p class="section-sub">Experts-comptables, collaborateurs, DAFâ€¦</p>
+    <div class="testi-grid">
+      <div class="testi-card">
+        <div class="testi-stars">âË…âË…âË…âË…âË…</div>
+        <p class="testi-text">"Je lisais les JO moi-même chaque semaine. Depuis que je suis abonné, j'ai récupéré 45 minutes par semaine et je ne rate plus rien."</p>
+        <div class="testi-author">
+          <strong>Marie-Christine L.</strong>
+          Expert-comptable — Cabinet de 8 personnes
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">âË…âË…âË…âË…âË…</div>
+        <p class="testi-text">"Le format en 3 points actionnables est vraiment intelligent. Je transfère directement à mes collaborateurs. Gain de temps énorme."</p>
+        <div class="testi-author">
+          <strong>Thomas B.</strong>
+          Associé — Cabinet d'audit
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">âË…âË…âË…âË…âË…</div>
+        <p class="testi-text">"J'ai découvert une modification de plafond TVA que mon logiciel n'avait pas encore intégrée. Ça m'a évité une erreur chez un client."</p>
+        <div class="testi-author">
+          <strong>Sophie R.</strong>
+          Directrice financière
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- â"€â"€â"€ FAQ â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ -->
+<section class="section" id="faq">
+  <div class="container">
+    <p class="section-label">Questions fréquentes</p>
+    <h2>Tout ce que vous<br>voulez savoir</h2>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Quand est-ce que je reçois mes emails ? <span class="arrow">ââ</span>
+        </button>
+        <div class="faq-a">Chaque lundi C  9h du matin, heure de Paris. Le récap couvre les textes publiés au cours de la semaine précédente.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Comment fonctionne l'essai gratuit ? <span class="arrow">ââ</span>
+        </button>
+        <div class="faq-a">Vous entrez votre CB pour démarrer l'essai, mais aucun débit n'est effectué pendant 14 jours. Vous recevez 2 éditions gratuites (2 lundis). Si vous résiliez avant la fin de l'essai, vous ne payez rien.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Puis-je résilier à tout moment ? <span class="arrow">ââ</span>
+        </button>
+        <div class="faq-a">Oui, sans préavis ni pénalité, même pendant l'essai gratuit. Vous gérez votre abonnement directement via le portail Stripe. La résiliation prend effet à la fin de la période en cours.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Les sources sont-elles vraiment officielles ? <span class="arrow">ââ</span>
+        </button>
+        <div class="faq-a">Oui. Nous agrégeons les flux du Journal Officiel (legifrance.gouv.fr) et du Bulletin Officiel des Finances Publiques. Chaque élément est sourcé et daté.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Qui rédige les synthèses ? <span class="arrow">ââ</span>
+        </button>
+        <div class="faq-a">Nos synthèses sont rédigées et vérifiées par des professionnels de l'expertise comptable, assistés par des outils d'analyse avancés pour garantir l'exhaustivité de la veille.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Le service couvre-t-il le droit social ? <span class="arrow">ââ</span>
+        </button>
+        <div class="faq-a">La newsletter couvre principalement la fiscalité des entreprises, la TVA, le droit comptable et les obligations déclaratives. Le droit social (paye, cotisations) est couvert en lien avec ces domaines.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- â"€â"€â"€ CTA Banner â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ -->
+<section class="cta-banner">
+  <div class="container">
+    <h2 style="color:white">Prêt à gagner 45 minutes<br>par semaine ?</h2>
+    <p>Rejoignez les experts-comptables qui ne manquent plus rien.</p>
+    <a href="https://buy.stripe.com/6oU5kC22naLR2Jn6vS2sM00" class="btn-primary">🚀 Essai gratuit 14 jours</a>
+  </div>
+</section>
+
+<!-- â"€â"€â"€ Footer â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ -->
+<footer>
+  <div class="container">
+    <p style="margin-bottom:10px">
+      <strong style="color:#d1d5db">VeilleRéglementaire.fr</strong> — La veille réglementaire des experts-comptables
+    </p>
+    <p>
+      <a href="mailto:contact@veillereglementaires.fr">contact@veillereglementaires.fr</a>
+      &nbsp;·&nbsp;
+      <a href="#faq">FAQ</a>
+      &nbsp;·&nbsp;
+      <a href="mentions-legales.html">Mentions légales</a>
+      &nbsp;·&nbsp;
+      <a href="cgv.html">CGV</a>
+      · <a href="politique-confidentialite.html">Confidentialité</a>
+    </p>
+  </div>
+</footer>
+
+<!-- â"€â"€â"€ Loading overlay â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-box">
+    <div class="spinner"></div>
+    <p style="font-weight:600;color:#111827;margin-bottom:6px">Redirection vers Stripeâ€¦</p>
+    <p style="font-size:13px;color:#6b7280">Vous allez être redirigé vers notre page de paiement sécurisée.</p>
+  </div>
+</div>
+
+<script>
+  // â"€â"€â"€ FAQ accordion â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
+  function toggleFaq(btn) {
+    const item = btn.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+
+  // â"€â"€â"€ Smooth scroll â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+</script>
+
+</body>
+</html><!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>VeilleRÃÂÃÂ©glementaire.fr ÃÂ¢Ã¢ÂÂ¬Ã¢ÂÂ La veille fiscale et juridique des experts-comptables</title>
   <meta name="description" content="Chaque lundi matin, recevez un rÃÂÃÂ©cap des nouveaux textes de loi, dÃÂÃÂ©crets et obligations fiscales. SourcÃÂÃÂ© LÃÂÃÂ©gifrance et JO, analysÃÂÃÂ© par des experts-comptables." />
 

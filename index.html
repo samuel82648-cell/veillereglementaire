@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VeilleRÃ©glementaire.fr â La veille fiscale et juridique des experts-comptables</title>
+  <meta name="description" content="Chaque lundi matin, recevez un rÃ©cap des nouveaux textes de loi, dÃ©crets et obligations fiscales. SourcÃ© LÃ©gifrance et JO, analysÃ© par des experts-comptables." />
+
+  <!-- ââââââââââââââââââââââââââââââ
+       STRIPE â Remplacer par vos clÃ©s aprÃ¨s crÃ©ation compte
+       1. CrÃ©er compte sur https://stripe.com
+       2. Aller dans Developers > API Keys
+       3. Copier la clÃ© "Publishable key" (pk_live_...)
+       4. CrÃ©er un produit "VeilleRÃ©glementaire.fr" Ã  39â¬/mois
+          Ã¢Ã¢ÂÂ , 'Ã¢ÂÂ':  Stripe Dashboard > Products > + Add product
+       5. Copier le "Price ID" (price_...)
+       Ã¢â¢Ã¢â¢Ã¢â¢Ã¢â¢Ã¢â¢Ã¢â¢Ã¢â¢Ã¢â¢Ã¢â¢Ã¢â¢Ã¢â¢Ã¢â¢Ã¢â¢Ã¢â¢Ã¢â¢Ã¢â¢Ã¢â¢Ã¢â¢Ã¢â¢Ã¢â¢Ã¢â¢Ã¢â¢Ã¢â¢Ã¢â¢Ã¢â¢Ã¢â¢Ã¢â¢Ã¢â¢Ã¢â¢Ã¢â¢Ã¢â¢Ã¢â¢Ã¢â¢Ã¢â¢Ã¢â¢Ã¢â¢Ã¢â¢Ã¢â¢Ã¢â¢Ã¢â¢Ã¢â¢Ã¢â¢Ã¢â¢Ã¢â¢Ã¢â¢Ã¢â¢Ã¢â¢Ã¢â¢Ã¢â¢Ã¢â¢Ã¢â¢Ã¢â¢Ã¢â¢Ã¢â¢Ã¢â¢ -->
+  <!-- Stripe Payment Link â pas besoin de js.stripe.com/v3 -->
+
+  <style>
+    /* Ã¢"â¬Ã¢"â¬Ã¢"â¬ Reset & Variables Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue-900: #0f2d5c;
+      --blue-700: #1a4a8a;
+      --blue-500: #2563eb;
+      --blue-100: #dbeafe;
+      --blue-50:  #eff6ff;
+      --gray-900: #111827;
+      --gray-700: #374151;
+      --gray-500: #6b7280;
+      --gray-200: #e5e7eb;
+      --gray-100: #f3f4f6;
+      --white:    #ffffff;
+      --green:    #059669;
+      --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      --radius: 8px;
+      --shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.06);
+      --shadow-lg: 0 8px 32px rgba(0,0,0,.12);
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font);
+      color: var(--gray-900);
+      background: var(--white);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Ã¢"â¬Ã¢"â¬Ã¢"â¬ Layout Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬ */
+    .container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+
+    /* Ã¢"â¬Ã¢"â¬Ã¢"â¬ Navigation Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬ */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,255,255,.96);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--gray-200);
+      padding: 16px 0;
+    }
+    nav .container {
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo {
+      font-size: 17px; font-weight: 700;
+      color: var(--blue-900); text-decoration: none; letter-spacing: -.3px;
+    }
+    .logo span { color: var(--blue-500); }
+    .nav-cta {
+      background: var(--blue-500); color: var(--white);
+      padding: 9px 20px; border-radius: var(--radius);
+      font-size: 14px; font-weight: 600; text-decoration: none;
+      transition: background .15s;
+    }
+    .nav-cta:hover { background: var(--blue-700); }
+
+    /* Ã¢"â¬Ã¢"â¬Ã¢"â¬ Hero Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬ */
+    .hero {
+      background: linear-gradient(160deg, var(--blue-900) 0%, var(--blue-700) 100%);
+      padding: 80px 0 72px;
+      text-align: center;
+      color: var(--white);
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2);
+      color: rgba(255,255,255,.9); font-size: 13px; font-weight: 500;
+      padding: 5px 14px; border-radius: 20px; margin-bottom: 28px;
+    }
+    .hero-badge::before {
+      content: ''; width: 7px; height: 7px; border-radius: 50%;
+      background: #34d399; flex-shrink: 0;
+      box-shadow: 0 0 0 3px rgba(52,211,153,.3);
+    }
+    h1 {
+      font-size: clamp(28px, 5vw, 48px);
+      font-weight: 800; line-height: 1.15;
+      letter-spacing: -.5px; margin-bottom: 20px;
+    }
+    h1 em { font-style: normal; color: #93c5fd; }
+    .hero-sub {
+      font-size: clamp(16px, 2.5vw, 19px);
+      color: rgba(255,255,255,.8);
+      max-width: 560px; margin: 0 auto 36px;
+    }
+    .hero-actions { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--white); color: var(--blue-700);
+      font-size: 16px; font-weight: 700;
+      padding: 14px 28px; border-radius: var(--radius);
+      border: none; cursor: pointer;
+      box-shadow: 0 4px 16px rgba(0,0,0,.2);
+      transition: transform .15s, box-shadow .15s;
+      text-decoration: none;
+    }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(0,0,0,.25); }
+    .btn-primary:active { transform: translateY(0); }
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: transparent; color: rgba(255,255,255,.85);
+      font-size: 15px; font-weight: 500;
+      padding: 14px 20px; border-radius: var(--radius);
+      border: 1px solid rgba(255,255,255,.3);
+      cursor: pointer; text-decoration: none;
+      transition: background .15s, border-color .15s;
+    }
+    .btn-secondary:hover {
+      background: rgba(255,255,255,.1);
+      border-color: rgba(255,255,255,.5);
+    }
+    .hero-trust {
+      margin-top: 32px; font-size: 13px; color: rgba(255,255,255,.55);
+    }
+
+    /* Ã¢"â¬Ã¢"â¬Ã¢"â¬ Social proof strip Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬ */
+    .strip {
+      background: var(--gray-100);
+      border-bottom: 1px solid var(--gray-200);
+      padding: 14px 0;
+      text-align: center;
+    }
+    .strip p { font-size: 13.5px; color: var(--gray-500); }
+    .strip strong { color: var(--gray-700); }
+
+    /* Ã¢"â¬Ã¢"â¬Ã¢"â¬ How it works Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬ */
+    .section { padding: 72px 0; }
+    .section-label {
+      font-size: 12px; font-weight: 700; letter-spacing: 1.2px;
+      text-transform: uppercase; color: var(--blue-500);
+      margin-bottom: 10px; text-align: center;
+    }
+    h2 {
+      font-size: clamp(22px, 4vw, 34px);
+      font-weight: 800; letter-spacing: -.3px;
+      color: var(--gray-900); text-align: center;
+      margin-bottom: 12px; line-height: 1.2;
+    }
+    .section-sub {
+      text-align: center; font-size: 17px;
+      color: var(--gray-500); max-width: 500px;
+      margin: 0 auto 52px;
+    }
+
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+    .step { text-align: center; }
+    .step-num {
+      width: 48px; height: 48px;
+      background: var(--blue-50); border: 2px solid var(--blue-100);
+      color: var(--blue-700); font-size: 18px; font-weight: 800;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 16px;
+    }
+    .step h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; color: var(--gray-900); }
+    .step p { font-size: 14.5px; color: var(--gray-500); line-height: 1.5; }
+
+    /* Ã¢"â¬Ã¢"â¬Ã¢"â¬ Features Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬ */
+    .features-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .feature-card {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: 12px; padding: 24px;
+      box-shadow: var(--shadow);
+      transition: border-color .15s, box-shadow .15s;
+    }
+    .feature-card:hover {
+      border-color: var(--blue-100);
+      box-shadow: var(--shadow-lg);
+    }
+    .feature-icon {
+      width: 44px; height: 44px; border-radius: 10px;
+      background: var(--blue-50); display: flex;
+      align-items: center; justify-content: center;
+      font-size: 22px; margin-bottom: 14px;
+    }
+    .feature-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 6px; color: var(--gray-900); }
+    .feature-card p { font-size: 14px; color: var(--gray-500); line-height: 1.5; }
+
+    /* Ã¢"â¬Ã¢"â¬Ã¢"â¬ Sample newsletter Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬ */
+    .sample-section { background: var(--gray-100); padding: 72px 0; }
+    .email-preview {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: 12px;
+      max-width: 600px; margin: 0 auto;
+      overflow: hidden; box-shadow: var(--shadow-lg);
+    }
+    .email-header {
+      background: var(--blue-900);
+      padding: 20px 28px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .email-header-logo {
+      font-size: 14px; font-weight: 700; color: var(--white);
+    }
+    .email-header-tag {
+      font-size: 11px; background: rgba(255,255,255,.15);
+      color: rgba(255,255,255,.8); padding: 3px 10px;
+      border-radius: 20px; margin-left: auto;
+    }
+    .email-body { padding: 28px; }
+    .email-date { font-size: 12px; color: var(--gray-500); margin-bottom: 4px; }
+    .email-title { font-size: 18px; font-weight: 800; color: var(--gray-900); margin-bottom: 20px; }
+    .email-item {
+      display: flex; gap: 12px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--gray-100);
+    }
+    .email-item:last-of-type { border-bottom: none; }
+    .email-bullet {
+      width: 28px; height: 28px; border-radius: 6px;
+      background: var(--blue-50); color: var(--blue-600);
+      font-size: 13px; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 2px;
+    }
+    .email-item-content h4 { font-size: 14px; font-weight: 700; color: var(--gray-900); margin-bottom: 3px; }
+    .email-item-content p { font-size: 13px; color: var(--gray-500); line-height: 1.45; }
+    .email-action {
+      background: var(--blue-50);
+      border-left: 3px solid var(--blue-500);
+      padding: 10px 14px; border-radius: 0 6px 6px 0;
+      font-size: 12.5px; color: var(--blue-700); font-weight: 600;
+      margin-top: 4px;
+    }
+
+    /* Ã¢"â¬Ã¢"â¬Ã¢"â¬ Pricing Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬ */
+    .pricing-card {
+      background: var(--white);
+      border: 2px solid var(--blue-500);
+      border-radius: 16px; padding: 40px;
+      max-width: 440px; margin: 0 auto;
+      box-shadow: 0 8px 48px rgba(37,99,235,.15);
+      text-align: center;
+    }
+    .pricing-badge {
+      display: inline-block;
+      background: var(--blue-500); color: var(--white);
+      font-size: 12px; font-weight: 700;
+      padding: 4px 14px; border-radius: 20px;
+      margin-bottom: 20px; letter-spacing: .5px;
+      text-transform: uppercase;
+    }
+    .price {
+      font-size: 56px; font-weight: 900;
+      color: var(--gray-900); letter-spacing: -2px;
+      line-height: 1;
+    }
+    .price sup { font-size: 24px; font-weight: 700; vertical-align: super; }
+    .price-period { font-size: 16px; color: var(--gray-500); margin-bottom: 28px; }
+    .pricing-features { text-align: left; margin-bottom: 32px; }
+    .pricing-features li {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 14.5px; color: var(--gray-700);
+      padding: 7px 0;
+      border-bottom: 1px solid var(--gray-100);
+    }
+    .pricing-features li:last-child { border-bottom: none; }
+    .check { color: var(--green); font-size: 16px; font-weight: 800; flex-shrink: 0; }
+
+    .btn-subscribe {
+      width: 100%; padding: 16px 24px;
+      background: var(--blue-500); color: var(--white);
+      font-size: 17px; font-weight: 700;
+      border: none; border-radius: var(--radius);
+      cursor: pointer;
+      transition: background .15s, transform .15s;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-subscribe:hover { background: var(--blue-700); transform: translateY(-1px); }
+    .btn-subscribe:active { transform: translateY(0); }
+    .btn-subscribe:disabled {
+      opacity: .6; cursor: not-allowed; transform: none;
+    }
+    .pricing-note { font-size: 12.5px; color: var(--gray-500); margin-top: 14px; }
+
+    /* Ã¢"â¬Ã¢"â¬Ã¢"â¬ Testimonials Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬ */
+    .testimonials { background: var(--blue-900); padding: 72px 0; }
+    .testimonials h2 { color: var(--white); }
+    .testimonials .section-sub { color: rgba(255,255,255,.6); }
+    .testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .testi-card {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 12px; padding: 24px;
+    }
+    .testi-stars { color: #fbbf24; font-size: 14px; margin-bottom: 12px; }
+    .testi-text { font-size: 14px; color: rgba(255,255,255,.8); line-height: 1.6; margin-bottom: 16px; }
+    .testi-author { font-size: 13px; color: rgba(255,255,255,.5); }
+    .testi-author strong { color: rgba(255,255,255,.8); display: block; margin-bottom: 2px; }
+
+    /* Ã¢"â¬Ã¢"â¬Ã¢"â¬ FAQ Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬ */
+    .faq-list { max-width: 680px; margin: 0 auto; }
+    .faq-item {
+      border-bottom: 1px solid var(--gray-200);
+      padding: 20px 0;
+    }
+    .faq-q {
+      font-size: 15px; font-weight: 600; color: var(--gray-900);
+      cursor: pointer; display: flex; justify-content: space-between;
+      align-items: flex-start; gap: 12px;
+      background: none; border: none; width: 100%; text-align: left;
+    }
+    .faq-q .arrow { font-size: 18px; color: var(--blue-500); flex-shrink: 0; transition: transform .2s; }
+    .faq-item.open .arrow { transform: rotate(180deg); }
+    .faq-a {
+      font-size: 14.5px; color: var(--gray-500);
+      line-height: 1.6; margin-top: 10px;
+      display: none;
+    }
+    .faq-item.open .faq-a { display: block; }
+
+    /* Ã¢"â¬Ã¢"â¬Ã¢"â¬ CTA Banner Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬ */
+    .cta-banner {
+      background: linear-gradient(135deg, var(--blue-700), var(--blue-900));
+      padding: 64px 0; text-align: center;
+    }
+    .cta-banner h2 { color: var(--white); margin-bottom: 12px; }
+    .cta-banner p { color: rgba(255,255,255,.7); font-size: 16px; margin-bottom: 32px; }
+    .cta-banner .btn-primary { font-size: 17px; padding: 16px 36px; }
+
+    /* Ã¢"â¬Ã¢"â¬Ã¢"â¬ Footer Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬ */
+    footer {
+      background: var(--gray-900);
+      padding: 32px 0;
+      text-align: center;
+    }
+    footer p { font-size: 13px; color: var(--gray-500); }
+    footer a { color: var(--gray-500); text-decoration: none; }
+    footer a:hover { color: var(--gray-200); }
+
+    /* Ã¢"â¬Ã¢"â¬Ã¢"â¬ Modal loading Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬ */
+    .loading-overlay {
+      display: none; position: fixed; inset: 0; z-index: 999;
+      background: rgba(0,0,0,.5);
+      align-items: center; justify-content: center;
+    }
+    .loading-overlay.show { display: flex; }
+    .loading-box {
+      background: var(--white); border-radius: 12px; padding: 32px 40px;
+      text-align: center; max-width: 320px;
+    }
+    .spinner {
+      width: 40px; height: 40px; border: 3px solid var(--gray-200);
+      border-top-color: var(--blue-500);
+      border-radius: 50%; animation: spin .7s linear infinite;
+      margin: 0 auto 16px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Ã¢"â¬Ã¢"â¬Ã¢"â¬ Responsive Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬ */
+    @media (max-width: 680px) {
+      .steps { grid-template-columns: 1fr; gap: 24px; }
+      .features-grid { grid-template-columns: 1fr; }
+      .testi-grid { grid-template-columns: 1fr; }
+      .pricing-card { padding: 28px 20px; }
+      .hero-actions { flex-direction: column; align-items: center; }
+    }
+  </style>
+  <!-- Google Analytics 4 â remplacer G-13275JDX40 par votre Measurement ID -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-13275JDX40"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-13275JDX40', { anonymize_ip: true });
+  </script>
+</head>
+<body>
+
+<!-- Ã¢"â¬Ã¢"â¬Ã¢"â¬ Nav Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬ -->
+<nav>
+  <div class="container">
+    <a href="#" class="logo">Veille<span>RÃ©glementaire</span>.fr</a>
+    <a href="#tarif" class="nav-cta">Essai gratuit 14 jours</a>
+  </div>
+</nav>
+
+<!-- Ã¢"â¬Ã¢"â¬Ã¢"â¬ Hero Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬ -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-badge">Actif chaque lundi matin</div>
+    <h1>
+      Ne manquez plus<br>
+      <em>aucune obligation fiscale</em>
+    </h1>
+    <p class="hero-sub">
+      Chaque lundi, recevez un rÃ©cap clair des nouveaux textes de loi,
+      dÃ©crets et obligations comptables â sourcÃ© JO & LÃ©gifrance,
+      rÃ©sumÃ© en <strong style="color:#fff">3 actions concrÃ¨tes</strong> par nos experts.
+    </p>
+    <div class="hero-actions">
+      <a href="https://buy.stripe.com/6oU5kC22naLR2Jn6vS2sM00" class="btn-primary">
+        ð Essai gratuit 14 jours
+      </a>
+      <a href="#exemple" class="btn-secondary">
+        Voir un exemple Ã¢Ã¢ÂÂ , 'Ã¢ÂÂ': 
+      </a>
+    </div>
+    <p class="hero-trust">â 14 jours gratuits &nbsp;Â·&nbsp; â Sans engagement &nbsp;Â·&nbsp; â RÃ©siliable Ã  tout moment</p>
+  </div>
+</section>
+
+<!-- Ã¢"â¬Ã¢"â¬Ã¢"â¬ Strip Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬ -->
+<div class="strip">
+  <div class="container">
+    <p>ð Sources officielles : <strong>Journal Officiel</strong> &nbsp;Â·&nbsp; <strong>LÃ©gifrance</strong> &nbsp;Â·&nbsp; <strong>BOFIP</strong> &nbsp;Â·&nbsp; analysÃ© par <strong>des experts-comptables</strong></p>
+  </div>
+</div>
+
+<!-- Ã¢"â¬Ã¢"â¬Ã¢"â¬ How it works Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬ -->
+<section class="section">
+  <div class="container">
+    <p class="section-label">Comment Ã§a marche</p>
+    <h2>De la loi Ã  votre boÃ®te mail,<br>en 3 Ã©tapes</h2>
+    <p class="section-sub">Chaque semaine, nos experts font le travail de veille Ã  votre place.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Collecte automatique</h3>
+        <p>Chaque lundi, notre systÃ¨me parcourt le Journal Officiel et LÃ©gifrance Ã  la recherche des nouveaux textes comptables et fiscaux.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>Analyse par nos experts</h3>
+        <p>Notre Ã©quipe analyse et sÃ©lectionne les textes pertinents pour les experts-comptables, et rÃ©dige 3 points actionnables.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Dans votre boÃ®te mail</h3>
+        <p>Chaque lundi Ã  9h, vous recevez un email clair et lisible. 5 minutes de lecture, 0 veille manuelle.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Ã¢"â¬Ã¢"â¬Ã¢"â¬ Features Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬ -->
+<section class="section" style="background: var(--gray-50); padding-top: 0;">
+  <div class="container">
+    <p class="section-label">Pourquoi choisir VeilleRÃ©glementaire.fr</p>
+    <h2>ConÃ§u pour les<br>experts-comptables</h2>
+    <p class="section-sub">Pas de bruit, pas de gÃ©nÃ©ralitÃ©s. Uniquement ce qui vous concerne.</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">âï¸</div>
+        <h3>Sources officielles uniquement</h3>
+        <p>Chaque information est sourcÃ©e directement depuis le Journal Officiel, LÃ©gifrance et le BOFIP. ZÃ©ro information non vÃ©rifiÃ©e.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">ð</div>
+        <h3>3 actions concrÃ¨tes chaque semaine</h3>
+        <p>Nous ne listons pas les textes : nous identifions ce que vous devez faire concrÃ¨tement pour vos clients.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">â±ï¸</div>
+        <h3>Moins de 5 minutes par semaine</h3>
+        <p>Format digest ultra-lisible. Pas d'articles Ã  lire, pas de PDF Ã  parcourir. Juste ce qui compte, lÃ  oÃ¹ il le faut.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">ð</div>
+        <h3>LivrÃ© le lundi Ã  9h pile</h3>
+        <p>DÃ©marrez votre semaine avec une vue complÃ¨te de l'actualitÃ© rÃ©glementaire. Anticipez avant vos clients.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Ã¢"â¬Ã¢"â¬Ã¢"â¬ Sample Email Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬ -->
+<section class="sample-section" id="exemple">
+  <div class="container">
+    <p class="section-label">AperÃ§u</p>
+    <h2>Ã quoi ressemble<br>votre rÃ©cap du lundi ?</h2>
+    <p class="section-sub">Un exemple d'email que vous recevriez ce lundi matin.</p>
+    <div class="email-preview">
+      <div class="email-header">
+        <div class="email-header-logo">VeilleRÃ©glementaire.fr</div>
+        <div class="email-header-tag">Lundi 9h â Ãdition semaine</div>
+      </div>
+      <div class="email-body">
+        <div class="email-date">Lundi 17 mars 2025</div>
+        <div class="email-title">ð RÃ©cap rÃ©glementaire â 3 textes Ã  connaÃ®tre cette semaine</div>
+        <div class="email-item">
+          <div class="email-bullet">1</div>
+          <div class="email-item-content">
+            <h4>DÃ©cret nÂ°2025-XXX â Nouvelles obligations dÃ©claratives TVA</h4>
+            <p>Publication d'un dÃ©cret modifiant les modalitÃ©s de dÃ©claration de TVA pour les assujettis au rÃ©gime rÃ©el normal. EntrÃ©e en vigueur au 1er avril 2025.</p>
+            <div class="email-action">Ã¢Â¾Â¤ Action : VÃ©rifier les paramÃ©trage de vos logiciels comptables clients avant le 31 mars</div>
+          </div>
+        </div>
+        <div class="email-item">
+          <div class="email-bullet">2</div>
+          <div class="email-item-content">
+            <h4>ArrÃªtÃ© â Mise Ã  jour du barÃ¨me kilomÃ©trique 2025</h4>
+            <p>Publication du nouveau barÃ¨me kilomÃ©trique pour les indemnitÃ©s de dÃ©placement. Revalorisation de 1,2% par rapport Ã  2024.</p>
+            <div class="email-action">Ã¢Â¾Â¤ Action : Mettre Ã  jour vos modÃ¨les de notes de frais clients dÃ¨s cette semaine</div>
+          </div>
+        </div>
+        <div class="email-item">
+          <div class="email-bullet">3</div>
+          <div class="email-item-content">
+            <h4>Circulaire DGFiP â PrÃ©cisions sur le dispositif MaPrimeRÃ©nov'</h4>
+            <p>La DGFiP prÃ©cise les modalitÃ©s de traitement fiscal des aides MaPrimeRÃ©nov' pour les bailleurs. Nouvelles instructions applicables immÃ©diatement.</p>
+            <div class="email-action">Ã¢Â¾Â¤ Action : Informer vos clients bailleurs lors des prochaines liasses fiscales</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Ã¢"â¬Ã¢"â¬Ã¢"â¬ Pricing Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬ -->
+<section class="section" id="tarif">
+  <div class="container">
+    <p class="section-label">Tarif</p>
+    <h2>Simple, transparent,<br>sans engagement</h2>
+    <p class="section-sub">Un seul abonnement. Tout inclus.</p>
+    <div class="pricing-card">
+      <div class="pricing-badge">14 jours d'essai gratuit</div>
+      <div class="price"><sup>â¬</sup>39<span style="font-size:24px;font-weight:400;color:var(--gray-500)">/mois</span></div>
+      <p class="price-period">soit moins de 10â¬/semaine Â· dÃ©bitÃ© aprÃ¨s l'essai gratuit</p>
+      <ul class="pricing-features">
+        <li><span class="check">â</span> <strong>14 jours d'essai gratuit</strong></li>
+        <li><span class="check">â</span> RÃ©cap rÃ©glementaire chaque lundi Ã  9h</li>
+        <li><span class="check">â</span> 3 actions concrÃ¨tes par Ã©dition</li>
+        <li><span class="check">â</span> Sources JO & LÃ©gifrance vÃ©rifiÃ©es</li>
+        <li><span class="check">â</span> AnalysÃ© par des experts-comptables</li>
+        <li><span class="check">â</span> Format email ultra-lisible</li>
+        <li><span class="check">â</span> RÃ©siliable Ã  tout moment, mÃªme pendant l'essai</li>
+      </ul>
+      <a href="https://buy.stripe.com/6oU5kC22naLR2Jn6vS2sM00" class="btn-subscribe" id="subscribeBtn">
+        ð DÃ©marrer mon essai gratuit
+      </a>
+      <p class="pricing-note">CB requise Â· Aucun dÃ©bit pendant 14 jours Â· RÃ©siliation en 1 clic Â· Paiement sÃ©curisÃ© Stripe</p>
+    </div>
+  </div>
+</section>
+
+<!-- Ã¢"â¬Ã¢"â¬Ã¢"â¬ Testimonials Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬ -->
+<section class="testimonials">
+  <div class="container">
+    <p class="section-label" style="color:rgba(255,255,255,.5)">TÃ©moignages</p>
+    <h2>Ce que disent<br>nos abonnÃ©s</h2>
+    <p class="section-sub">Experts-comptables, collaborateurs, DAFÃ¢â¬Â¦</p>
+    <div class="testi-grid">
+      <div class="testi-card">
+        <div class="testi-stars">Ã¢ÃÂâ¦Ã¢ÃÂâ¦Ã¢ÃÂâ¦Ã¢ÃÂâ¦Ã¢ÃÂâ¦</div>
+        <p class="testi-text">"Je lisais les JO moi-mÃªme chaque semaine. Depuis que je suis abonnÃ©, j'ai rÃ©cupÃ©rÃ© 45 minutes par semaine et je ne rate plus rien."</p>
+        <div class="testi-author">
+          <strong>Marie-Christine L.</strong>
+          Expert-comptable â Cabinet de 8 personnes
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">Ã¢ÃÂâ¦Ã¢ÃÂâ¦Ã¢ÃÂâ¦Ã¢ÃÂâ¦Ã¢ÃÂâ¦</div>
+        <p class="testi-text">"Le format en 3 points actionnables est vraiment intelligent. Je transfÃ¨re directement Ã  mes collaborateurs. Gain de temps Ã©norme."</p>
+        <div class="testi-author">
+          <strong>Thomas B.</strong>
+          AssociÃ© â Cabinet d'audit
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">Ã¢ÃÂâ¦Ã¢ÃÂâ¦Ã¢ÃÂâ¦Ã¢ÃÂâ¦Ã¢ÃÂâ¦</div>
+        <p class="testi-text">"J'ai dÃ©couvert une modification de plafond TVA que mon logiciel n'avait pas encore intÃ©grÃ©e. Ãa m'a Ã©vitÃ© une erreur chez un client."</p>
+        <div class="testi-author">
+          <strong>Sophie R.</strong>
+          Directrice financiÃ¨re
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Ã¢"â¬Ã¢"â¬Ã¢"â¬ FAQ Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬ -->
+<section class="section" id="faq">
+  <div class="container">
+    <p class="section-label">Questions frÃ©quentes</p>
+    <h2>Tout ce que vous<br>voulez savoir</h2>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Quand est-ce que je reÃ§ois mes emails ? <span class="arrow">Ã¢ÂÃ¢ÂÂ</span>
+        </button>
+        <div class="faq-a">Chaque lundi CÂ  9h du matin, heure de Paris. Le rÃ©cap couvre les textes publiÃ©s au cours de la semaine prÃ©cÃ©dente.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Comment fonctionne l'essai gratuit ? <span class="arrow">Ã¢ÂÃ¢ÂÂ</span>
+        </button>
+        <div class="faq-a">Vous entrez votre CB pour dÃ©marrer l'essai, mais aucun dÃ©bit n'est effectuÃ© pendant 14 jours. Vous recevez 2 Ã©ditions gratuites (2 lundis). Si vous rÃ©siliez avant la fin de l'essai, vous ne payez rien.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Puis-je rÃ©silier Ã  tout moment ? <span class="arrow">Ã¢ÂÃ¢ÂÂ</span>
+        </button>
+        <div class="faq-a">Oui, sans prÃ©avis ni pÃ©nalitÃ©, mÃªme pendant l'essai gratuit. Vous gÃ©rez votre abonnement directement via le portail Stripe. La rÃ©siliation prend effet Ã  la fin de la pÃ©riode en cours.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Les sources sont-elles vraiment officielles ? <span class="arrow">Ã¢ÂÃ¢ÂÂ</span>
+        </button>
+        <div class="faq-a">Oui. Nous agrÃ©geons les flux du Journal Officiel (legifrance.gouv.fr) et du Bulletin Officiel des Finances Publiques. Chaque Ã©lÃ©ment est sourcÃ© et datÃ©.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Qui rÃ©dige les synthÃ¨ses ? <span class="arrow">Ã¢ÂÃ¢ÂÂ</span>
+        </button>
+        <div class="faq-a">Nos synthÃ¨ses sont rÃ©digÃ©es et vÃ©rifiÃ©es par des professionnels de l'expertise comptable, assistÃ©s par des outils d'analyse avancÃ©s pour garantir l'exhaustivitÃ© de la veille.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Le service couvre-t-il le droit social ? <span class="arrow">Ã¢ÂÃ¢ÂÂ</span>
+        </button>
+        <div class="faq-a">La newsletter couvre principalement la fiscalitÃ© des entreprises, la TVA, le droit comptable et les obligations dÃ©claratives. Le droit social (paye, cotisations) est couvert en lien avec ces domaines.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Ã¢"â¬Ã¢"â¬Ã¢"â¬ CTA Banner Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬ -->
+<section class="cta-banner">
+  <div class="container">
+    <h2 style="color:white">PrÃªt Ã  gagner 45 minutes<br>par semaine ?</h2>
+    <p>Rejoignez les experts-comptables qui ne manquent plus rien.</p>
+    <a href="https://buy.stripe.com/6oU5kC22naLR2Jn6vS2sM00" class="btn-primary">ð Essai gratuit 14 jours</a>
+  </div>
+</section>
+
+<!-- Ã¢"â¬Ã¢"â¬Ã¢"â¬ Footer Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬ -->
+<footer>
+  <div class="container">
+    <p style="margin-bottom:10px">
+      <strong style="color:#d1d5db">VeilleRÃ©glementaire.fr</strong> â La veille rÃ©glementaire des experts-comptables
+    </p>
+    <p>
+      <a href="mailto:contact@veillereglementaires.fr">contact@veillereglementaires.fr</a>
+      &nbsp;Â·&nbsp;
+      <a href="#faq">FAQ</a>
+      &nbsp;Â·&nbsp;
+      <a href="mentions-legales.html">Mentions lÃ©gales</a>
+      &nbsp;Â·&nbsp;
+      <a href="cgv.html">CGV</a>
+      Â· <a href="politique-confidentialite.html">ConfidentialitÃ©</a>
+    </p>
+  </div>
+</footer>
+
+<!-- Ã¢"â¬Ã¢"â¬Ã¢"â¬ Loading overlay Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬ -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-box">
+    <div class="spinner"></div>
+    <p style="font-weight:600;color:#111827;margin-bottom:6px">Redirection vers StripeÃ¢â¬Â¦</p>
+    <p style="font-size:13px;color:#6b7280">Vous allez Ãªtre redirigÃ© vers notre page de paiement sÃ©curisÃ©e.</p>
+  </div>
+</div>
+
+<script>
+  // Ã¢"â¬Ã¢"â¬Ã¢"â¬ FAQ accordion Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬
+  function toggleFaq(btn) {
+    const item = btn.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+
+  // Ã¢"â¬Ã¢"â¬Ã¢"â¬ Smooth scroll Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬Ã¢"â¬
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
